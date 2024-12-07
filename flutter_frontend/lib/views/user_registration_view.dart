@@ -1,4 +1,3 @@
-// lib/views/user_registration_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/user_viewmodel.dart';
@@ -59,11 +58,23 @@ class _UserRegistrationViewState extends State<UserRegistrationView> {
                         name = value!;
                       },
                     ),
-                    TextFormField(
+                    DropdownButtonFormField<String>(
                       decoration: InputDecoration(labelText: '性別'),
+                      value: null, // 初期値を設定しない
+                      items: ['男', '女']
+                          .map((label) => DropdownMenuItem(
+                                child: Text(label),
+                                value: label,
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          sex = value!;
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return '性別を入力してください';
+                          return '性別を選択してください';
                         }
                         return null;
                       },
