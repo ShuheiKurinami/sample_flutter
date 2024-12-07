@@ -1,8 +1,8 @@
-// lib/views/user_list_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/user_viewmodel.dart';
+import '../../viewmodels/user_viewmodel.dart';
 import 'user_registration_view.dart';
+import 'user_edit_modal.dart';
 
 class UserListView extends StatefulWidget {
   @override
@@ -20,6 +20,13 @@ class _UserListViewState extends State<UserListView> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => UserRegistrationView()),
+    );
+  }
+
+  void _openEditModal(user) {
+    showDialog(
+      context: context,
+      builder: (context) => UserEditModal(user: user),
     );
   }
 
@@ -49,9 +56,14 @@ class _UserListViewState extends State<UserListView> {
                 return ListTile(
                   title: Text(user.name),
                   subtitle: Text('${user.sex}, ${user.address}'),
-                  trailing: Text(
-                    '${user.created_at.toLocal()}'.split(' ')[0],
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () => _openEditModal(user),
+                      ),
+                    ],
                   ),
                 );
               },

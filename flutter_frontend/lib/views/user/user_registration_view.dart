@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/user_viewmodel.dart';
+import '../../viewmodels/user_viewmodel.dart';
 
 class UserRegistrationView extends StatefulWidget {
   @override

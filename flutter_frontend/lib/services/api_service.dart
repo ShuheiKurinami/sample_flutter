@@ -35,4 +35,15 @@ class ApiService {
       throw Exception('Failed to load users');
     }
   }
+
+  static Future<void> updateUser(int id, String name, String sex, String address) async {
+    final response = await http.patch(
+      Uri.parse('${Constants.backendUrl}/users/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'name': name, 'sex': sex, 'address': address}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update user');
+    }
+  }
 }

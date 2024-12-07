@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'viewmodels/user_viewmodel.dart';
-import 'views/user_list_view.dart';
+import 'views/user/user_list_view.dart';
 
 void main() {
   runApp(
