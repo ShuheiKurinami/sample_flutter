@@ -17,6 +17,7 @@ class _UserEditModalState extends State<UserEditModal> {
   late String name;
   late String sex;
   late String address;
+  late String phone;
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _UserEditModalState extends State<UserEditModal> {
     name = widget.user.name;
     sex = widget.user.sex;
     address = widget.user.address;
+    phone = widget.user.phone; // 電話番号の初期値を追加
   }
 
   void _submit() async {
@@ -31,7 +33,7 @@ class _UserEditModalState extends State<UserEditModal> {
       _formKey.currentState!.save();
 
       bool success = await Provider.of<UserViewModel>(context, listen: false)
-          .updateUser(widget.user.id, name, sex, address);
+          .updateUser(widget.user.id, name, sex, address, phone); // phoneを追加
 
       if (success) {
         Navigator.pop(context); // モーダルを閉じる
@@ -65,17 +67,25 @@ class _UserEditModalState extends State<UserEditModal> {
                   name = value!;
                 },
               ),
-              TextFormField(
-                initialValue: sex,
+              DropdownButtonFormField<String>(
+                value: sex,
                 decoration: InputDecoration(labelText: '性別'),
+                items: ['男', '女']
+                    .map((label) => DropdownMenuItem(
+                          child: Text(label),
+                          value: label,
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    sex = value!;
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '性別を入力してください';
+                    return '性別を選択してください';
                   }
                   return null;
-                },
-                onSaved: (value) {
-                  sex = value!;
                 },
               ),
               TextFormField(
@@ -89,6 +99,23 @@ class _UserEditModalState extends State<UserEditModal> {
                 },
                 onSaved: (value) {
                   address = value!;
+                },
+              ),
+              TextFormField(
+                initialValue: phone,
+                decoration: InputDecoration(labelText: '電話番号'),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '電話番号を入力してください';
+                  }
+                  if (!RegExp(r'^[0-9]{10,15}$').hasMatch(value)) {
+                    return '有効な電話番号を入力してください (10~15桁の数字)';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  phone = value!;
                 },
               ),
             ],

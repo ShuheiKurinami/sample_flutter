@@ -9,6 +9,7 @@ class User {
   final String name;
   final String sex;
   final String address;
+  final String phone;
   final DateTime created_at;
   final DateTime updated_at;
 
@@ -17,10 +18,14 @@ class User {
     required this.name,
     required this.sex,
     required this.address,
+    required this.phone,
     required this.created_at,
     required this.updated_at,
   });
 
+  // JSONからオブジェクトを生成
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  // オブジェクトをJSONに変換
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

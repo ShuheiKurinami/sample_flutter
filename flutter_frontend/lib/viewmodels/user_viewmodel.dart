@@ -39,31 +39,37 @@ class UserViewModel extends ChangeNotifier {
   }
 
   // ユーザーを作成
-  Future<bool> createUser(String name, String sex, String address) async {
-    isLoading = true;
-    try {
-      User? user = await ApiService.createUser(name, sex, address);
-      if (user != null) {
-        _users.insert(0, user); // 新しいユーザーをリストの先頭に追加
-        errorMessage = null;
-        return true;
-      } else {
-        errorMessage = 'ユーザーの登録に失敗しました。';
-        return false;
-      }
-    } catch (e) {
-      errorMessage = 'ユーザーの登録に失敗しました。';
+  Future<bool> createUser(String name, String sex, String address, String phone) async {
+  _isLoading = true;
+  notifyListeners();
+
+  try {
+    User? user = await ApiService.createUser(name, sex, address, phone); // phoneを追加
+    if (user != null) {
+      _users.insert(0, user);
+      _errorMessage = null;
+      notifyListeners();
+      return true;
+    } else {
+      _errorMessage = 'ユーザーの登録に失敗しました。';
+      notifyListeners();
       return false;
-    } finally {
-      isLoading = false;
     }
+  } catch (e) {
+    _errorMessage = 'ユーザーの登録に失敗しました。';
+    notifyListeners();
+    return false;
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
+}
 
   // ユーザーを更新
-  Future<bool> updateUser(int id, String name, String sex, String address) async {
+  Future<bool> updateUser(int id, String name, String sex, String address, String phone) async {
     isLoading = true;
     try {
-      await ApiService.updateUser(id, name, sex, address);
+      await ApiService.updateUser(id, name, sex, address, phone);
       await fetchUsers(); // 更新後に一覧を再取得
       return true;
     } catch (e) {

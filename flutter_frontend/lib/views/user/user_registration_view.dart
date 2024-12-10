@@ -12,13 +12,14 @@ class _UserRegistrationViewState extends State<UserRegistrationView> {
   String name = '';
   String sex = '';
   String address = '';
+  String phone = '';
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       bool success = await Provider.of<UserViewModel>(context, listen: false)
-          .createUser(name, sex, address);
+          .createUser(name, sex, address, phone);
 
       if (success) {
         Navigator.pop(context);
@@ -92,6 +93,22 @@ class _UserRegistrationViewState extends State<UserRegistrationView> {
                       },
                       onSaved: (value) {
                         address = value!;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: '電話番号'),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '電話番号を入力してください';
+                        }
+                        if (!RegExp(r'^[0-9]{10,15}$').hasMatch(value)) {
+                          return '有効な電話番号を入力してください (10~15桁の数字)';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        phone = value!;
                       },
                     ),
                     SizedBox(height: 20),
