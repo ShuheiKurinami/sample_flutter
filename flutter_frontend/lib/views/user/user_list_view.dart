@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/user_viewmodel.dart';
 import 'user_registration_view.dart';
 import 'user_edit_modal.dart';
+import '../category/category_list_view.dart'; // カテゴリ一覧画面をインポート
 
 class UserListView extends StatefulWidget {
   @override
@@ -23,6 +24,13 @@ class _UserListViewState extends State<UserListView> {
     );
   }
 
+  void _navigateToCategories() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CategoryListView()),
+    );
+  }
+
   void _openEditModal(user) {
     showDialog(
       context: context,
@@ -35,10 +43,18 @@ class _UserListViewState extends State<UserListView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ユーザー一覧'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.category),
+            tooltip: 'カテゴリ一覧へ移動',
+            onPressed: _navigateToCategories,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToRegistration,
         child: Icon(Icons.add),
+        tooltip: '新しいユーザーを追加',
       ),
       body: Consumer<UserViewModel>(
         builder: (context, viewModel, child) {
