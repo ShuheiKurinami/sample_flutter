@@ -53,4 +53,25 @@ class CategoryViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> updateCategory(int id, String name, String description) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final updatedCategory = await CategoryApiService.updateCategory(id, name, description);
+      final index = _categories.indexWhere((category) => category.id == id);
+      if (index != -1) {
+        _categories[index] = updatedCategory; // 更新したデータを置き換え
+      }
+      _errorMessage = null;
+      return true;
+    } catch (e) {
+      _errorMessage = 'カテゴリの更新に失敗しました。';
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

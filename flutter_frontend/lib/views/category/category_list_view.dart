@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/category_viewmodel.dart';
 import 'category_registration_modal.dart';
+import 'category_edit_modal.dart'; // 編集モーダルをインポート
 
 class CategoryListView extends StatefulWidget {
   @override
@@ -19,6 +20,13 @@ class _CategoryListViewState extends State<CategoryListView> {
     showDialog(
       context: context,
       builder: (context) => CategoryRegistrationModal(),
+    );
+  }
+
+  void _openEditModal(category) {
+    showDialog(
+      context: context,
+      builder: (context) => CategoryEditModal(category: category), // 編集モーダルを開く
     );
   }
 
@@ -47,7 +55,11 @@ class _CategoryListViewState extends State<CategoryListView> {
                 final category = viewModel.categories[index];
                 return ListTile(
                   title: Text(category.name),
-                  subtitle: Text(category.description), // descriptionを表示
+                  subtitle: Text(category.description),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => _openEditModal(category),
+                  ),
                 );
               },
             );

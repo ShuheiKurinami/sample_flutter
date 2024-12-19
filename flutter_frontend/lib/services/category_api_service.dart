@@ -31,4 +31,22 @@ class CategoryApiService {
       return null;
     }
   }
+
+  static Future<Category> updateCategory(int id, String name, String description) async {
+  final response = await http.patch(
+    Uri.parse('http://localhost:3000/categories/$id'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode({
+      'name': name,
+      'description': description,
+    }),
+  );
+  if (response.statusCode == 200) {
+    return Category.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to update category');
+  }
+}
 }
