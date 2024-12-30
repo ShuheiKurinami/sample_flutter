@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/category_viewmodel.dart';
 import 'category_registration_modal.dart';
 import 'category_edit_modal.dart'; // 編集モーダルをインポート
+import '../../components/sidebar.dart'; // サイドバーをインポート
 
 class CategoryListView extends StatefulWidget {
   @override
@@ -35,6 +36,18 @@ class _CategoryListViewState extends State<CategoryListView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('カテゴリ一覧'),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'サイドバーを開く',
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
+      drawer: Sidebar(
+        onNavigateToCategories: () {
+          Navigator.pop(context);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openRegistrationModal,
