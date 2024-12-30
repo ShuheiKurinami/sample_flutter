@@ -1,8 +1,10 @@
+// lib/views/user/user_list_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/user_viewmodel.dart';
 import 'user_registration_view.dart';
 import 'user_edit_modal.dart';
+import '../../components/sidebar.dart'; // サイドバーをインポート
 import '../category/category_list_view.dart'; // カテゴリ一覧画面をインポート
 
 class UserListView extends StatefulWidget {
@@ -43,14 +45,15 @@ class _UserListViewState extends State<UserListView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ユーザー一覧'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.category),
-            tooltip: 'カテゴリ一覧へ移動',
-            onPressed: _navigateToCategories,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'サイドバーを開く',
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-        ],
+        ),
       ),
+      drawer: Sidebar(onNavigateToCategories: _navigateToCategories),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToRegistration,
         child: Icon(Icons.add),
